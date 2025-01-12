@@ -49,11 +49,17 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
     }
-
     public void MainMenu()
     {
 
         SceneManager.LoadScene(0);
+
+    }
+
+    public void NextLevel()
+    {
+
+        SceneManager.LoadScene(2);
 
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -8,6 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]private float jumpPower;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private LayerMask wallLayer;
+
+    public TextMeshProUGUI uiText;
+    int totalCoins;
+    int coinsCollected;
 
     [Header("SFX")]
     [SerializeField] private AudioClip jumpSound;
@@ -18,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
     private float wallJumpCooldown;
    
     private float horizontalInput;
-  //  private bool grounded;
+     private bool grounded;
 
     private void Awake()    //everytime a script is loaded
     {
@@ -27,6 +32,9 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         boxCollider = GetComponent<BoxCollider2D>();
 
+        coinsCollected = 0;
+        totalCoins = GameObject.FindGameObjectsWithTag("coin").Length;
+
     }
 
     private void Update()    //runs in every frame
@@ -34,8 +42,11 @@ public class PlayerMovement : MonoBehaviour
         horizontalInput = Input.GetAxis("Horizontal");
         body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
 
+        
 
-            //flips player sprite when moving left/right
+
+
+        //flips player sprite when moving left/right
         if (horizontalInput > 0.01f)
             transform.localScale = new Vector3(5,5,5);
         else if (horizontalInput < -0.01f)
@@ -70,7 +81,12 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         else
-            wallJumpCooldown += Time.deltaTime; 
+            wallJumpCooldown += Time.deltaTime;
+
+
+
+        string uiString = "x " + coinsCollected + "/" + totalCoins;
+        uiText.text = uiString;
     }
     private void Jump()    //method for jumping
     {
@@ -96,7 +112,14 @@ public class PlayerMovement : MonoBehaviour
             wallJumpCooldown = 0;
         }
     }
-
+    void OnTriggerEnter2D(Collider2D coll)     //added coin code from class 
+    {
+        if (coll.gameObject.tag == "coin")
+        {
+            coinsCollected++;
+            Destroy(coll.gameObject);
+        }
+    }
     private bool isGrounded()
     {
         RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0, Vector2.down, 0.1f, groundLayer);

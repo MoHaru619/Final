@@ -7,6 +7,8 @@ public class PlayerRespawn : MonoBehaviour
     [SerializeField] private AudioClip checkpointSound;
     //[SerializeField] private CameraController cam;
     private Transform currentCheckpoint;
+    private Transform finishCheckpoint;
+
     private Health playerHealth;
     private UIManager uiManager;
 
@@ -16,8 +18,6 @@ public class PlayerRespawn : MonoBehaviour
         uiManager = FindObjectOfType<UIManager>();
 
     }
-
-
     public void CheckRespawn()
     {
 
@@ -28,9 +28,11 @@ public class PlayerRespawn : MonoBehaviour
             //show game over
             uiManager.GameOver();
 
-            return;   
-        
+            return;
+
         }
+
+
 
 
         transform.position = currentCheckpoint.position;
@@ -40,20 +42,17 @@ public class PlayerRespawn : MonoBehaviour
         Camera.main.GetComponent<CameraController>().MovetoNewRoom(currentCheckpoint.parent);
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
         if (collision.transform.tag == "Checkpoint")
-        {
+        
 
             currentCheckpoint = collision.transform;
             SoundManager.instance.PlaySound(checkpointSound);
-            collision.GetComponent<Collider2D>().enabled = false; 
+            collision.GetComponent<Collider2D>().enabled = false;
+
+
         
-        
-        }
-    
-    
     }
 }
