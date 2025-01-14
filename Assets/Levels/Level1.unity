@@ -14665,7 +14665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3382700712812391206, guid: a3ddda5b04350d04591e7a5295e083fb, type: 3}
       propertyPath: startingHealth
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4292447974976526811, guid: a3ddda5b04350d04591e7a5295e083fb, type: 3}
       propertyPath: cam
